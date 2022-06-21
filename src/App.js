@@ -2,9 +2,12 @@ import React, { useRef, useState } from 'react';
 import './App.css';
 
 import firebase from 'firebase/compat/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-import 'firebase/analytics';
+// import 'firebase/firestore';
+// import 'firebase/auth';
+import 'firebase/compat/analytics';
+import 'firebase/compat/auth';
+import 'firebase/compat/messaging';
+import 'firebase/compat/firestore';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -50,15 +53,15 @@ function SignIn(){
 
   return (
     <>
-    <button className="sign-in" onCLick={signInWithGoogle}>Sign in with Google</button>
-    <p>Do not violate the community guidelines or you will be banned for life!</p>
+    <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
+    {/* <p>Do not violate the community guidelines or you will be banned for life!</p> */}
     </>
   )
 }
 
 function SignOut(){
   return auth.currentUser &&(
-    <button className="sign-out" OnClick={() => auth.signOut()}>Sign Out</button>
+    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
 
@@ -79,7 +82,7 @@ function ChatRoom(){
 
     await messagesRef.add({
       text: formValue,
-      createdAt: firebase.firebase.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL
     })
@@ -91,9 +94,8 @@ function ChatRoom(){
 
   return (<>
     <main>
-      <div>
-        {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-      </div>
+      
+      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
 
       <span ref={dummy}></span>
     </main>
